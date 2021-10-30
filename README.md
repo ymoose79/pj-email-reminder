@@ -1,4 +1,4 @@
-# svelte-kitPJ
+# pj-email-reminder
 a glorified todo app utilizing CRUD that acts as a sort of Email interface
 
 
