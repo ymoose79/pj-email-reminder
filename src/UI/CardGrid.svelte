@@ -14,7 +14,7 @@
 <section id="cards">
     <!-- itierate through [emails] declaring var as "card" 
             (screwy nomenclature, I know)-->
-    {#each emails as card}
+    {#each emails  as card}
 <!-- pass in the UI "template" and "map" the data -->
 
 <Cards 
@@ -23,7 +23,7 @@ date={card.date}
 subject={card.subject}
 importance={card.importance}
 description={card.description}
-email={card.email}
+contact={card.contact}
 id={card.id}
 />
 {/each}

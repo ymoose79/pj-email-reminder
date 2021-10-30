@@ -3,6 +3,7 @@
         const res = await fetch('../emails')
         const jsonRes = await res.json()
         console.log(jsonRes.emails);
+      
         // passes keys: as props
         return {props: { emails: jsonRes.emails}}
     }
@@ -10,12 +11,15 @@
 
 <script>
 
+import { savedEmails, get } from '$lib/stores';
 import Header from '../UI/Header.svelte';
 import TextInput from '../UI/TextInput.svelte';
 import CardGrid from '../UI/CardGrid.svelte';
+import Button from '../UI/Button.svelte';
 import Headroom from "svelte-headroom";
 
 export let emails;
+
 
 
 // we set Var for the bind f{} via the form inputs
@@ -23,14 +27,14 @@ let date ='';
 let subject ='';
 let importance ="❗️❗️ important❗️❗️";
 let description ='';
-let email ='';
+let contact ='';
 
 
 function reset(){
     date = '';
      subject ='';
     description ='';
-    email ='';
+    contact ='';
 }
 
 
@@ -54,7 +58,7 @@ function addEventCard() {
       subject: subject,
       description: description,
       importance: importance,
-      email: email,
+      contact: contact,
       saved: false
     };
     emails = [newCard, ...emails];
@@ -68,7 +72,7 @@ function addEventCard() {
     // loop over contactList[arr] to see if contact exists
     contactList.forEach(function(contact) {
         
-        if(contact !== email){
+        if(contact !== contact){
              reset();
             return console.log(contact);
         } else {
@@ -80,18 +84,32 @@ function addEventCard() {
 // --------------- Part 2: ----- build a contact list -------
     // if x = false, add contact to list
     if (x === false) {
-        contactList = [email, ...contactList]
+        contactList = [contact, ...contactList]
         return x = false;
     }
     reset();
   }
+
+ async function refresh(){
+      const res = await fetch('../emails')
+        const jsonRes = await res.json()
+        emails = jsonRes.emails
+  }
+
+function refreshUI(){
+    refresh();
+}
+
+
+// function checkEmailStore(){
+//     console.log(savedEmails);
+// }
 
 </script>
 
 
 <main>
 <Header/>
-
     <div class="form-page">
         <form class='form-entry' autocomplete="off" on:submit|preventDefault={addEventCard} >
             <TextInput 
@@ -107,9 +125,9 @@ function addEventCard() {
             id="email"
             label="email to"
             type="email"
-            value={email}
+            value={contact}
             placeholder="example@applesauce.com"
-            on:input={(event) => (email = event.target.value)}
+            on:input={(event) => (contact = event.target.value)}
             />
             <TextInput 
             controlType='text'
@@ -140,11 +158,28 @@ function addEventCard() {
             />
             </form>
         </div>
+        <div class="container">
+            <!-- <Button on:update={refreshUI}/> -->
+            <!-- <button on:click="{checkEmailStore}">email store</button> -->
+            <button on:click="{refreshUI}">Update the UI</button>
+        </div>
+
         <CardGrid {emails}/>
 </main>
     
             
  <style>
+    .container{
+        position: relative;
+    }
+    button{
+       display: block;
+       font-size: 2em;
+        margin: 2rem auto;
+        padding: 1rem;
+        width: 25rem;
+        background-color: rgb(52, 202, 89);
+    }
     .form-page {
          margin: 10rem 5rem 1rem;
           }

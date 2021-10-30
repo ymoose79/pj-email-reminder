@@ -1,14 +1,7 @@
-<script context="module">
-    export async function refreshEmails() {
-        console.log('a');
-    const res = await fetch('/emails')
-    const jsonRes = await res.json()
-    let emails = jsonRes.emails
-}
-</script>
 
 <script>
 import Modal from "./Modal.svelte";
+import { get } from '$lib/stores';
 
 
 // these var are setable FROM OUTSIDE this component in the file which the comopnent is embeded *** (<Card/>)--> index.svelte ***
@@ -16,12 +9,13 @@ import Modal from "./Modal.svelte";
     export let subject;
     export let importance;
     export let description;
-    export let email;
+    export let contact;
     export let id;
     export let saved;
     let openModal = false;
 
 let action;
+
 
 function confirmation(_action){
     openModal = true;
@@ -36,7 +30,7 @@ async function addECard(){
             subject,
             importance,
             description,
-            email,
+            contact,
             id,
             saved: true
         }
@@ -44,6 +38,7 @@ async function addECard(){
             method: 'POST',
             body: JSON.stringify(eCard)
         })
+        get();
     } catch(e) {
         alert('error sucka', e)
     }
@@ -56,17 +51,18 @@ async function delECard(){
             method: 'DELETE',
             body: JSON.stringify(id)
         })
-        refreshEmails()
+        get();
     } catch(e){
         alert('error somewhere or another', e)
     }
 }
 // -----  -----  -----    refresh email from DB  -----  -----  <-----  
-// async function refreshEmails() {
-//     const res = await fetch('/emails')
-//     const jsonRes = await res.json()
-//     emails = jsonRes.emails
-// }
+// async function refresh(){
+//       const res = await fetch('../emails')
+//         const jsonRes = await res.json()
+//         console.log('a');
+//         return savedEmails = jsonRes.emails
+//   }
 
 
 // ----     determine wether email is to be saved or deleted from DB
@@ -93,7 +89,7 @@ function saveOrDeleteEmail(_action){
             {/if}
             <h1>{importance}</h1>
             <h1>{date}</h1>
-            <h1>Send to: {email}</h1>
+            <h1>Send to: {contact}</h1>
             <h1>{subject}</h1>
         </header>
         <div class="content">
@@ -101,7 +97,7 @@ function saveOrDeleteEmail(_action){
         </div>
         <footer>
             <div class="button">
-                <button class='email' mode="outline" type='button'><a href="mailto:{email}?subject={subject} &body={description}"  method="post">email
+                <button class='email' mode="outline" type='button'><a href="mailto:{contact}?subject={subject} &body={description}"  method="post">email
                 </button>
                 <button class='delete' type='button' on:click={() => confirmation("DELETE")}>delete</button>
                 <button class='save' type='button' on:click={() => confirmation("SAVE")}>save</button>

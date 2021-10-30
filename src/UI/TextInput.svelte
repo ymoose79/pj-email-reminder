@@ -134,11 +134,11 @@ export let placeholder;
     #confirm{
         margin: 0 0 1rem 5rem;
         font-size: 1.5em;
-        color: #C2746D;
+        color:  rgb(150, 131, 47);
         position: relative;
         padding: .5rem 1rem;
         border-radius: .25em;
-        border-color: #C2746D;
+        border-color:  rgb(231, 203, 43);
         z-index: 0;
     }
 
