@@ -1,6 +1,7 @@
 
 <script>
 import Modal from "./Modal.svelte";
+import EditModal from "./EditModal.svelte";
 import { get } from '$lib/stores';
 
 
@@ -13,8 +14,20 @@ import { get } from '$lib/stores';
     export let id;
     export let saved;
     let openModal = false;
+    let openEditModal = false;
 
 let action;
+
+const eCard = {
+            date,
+            subject,
+            importance,
+            description,
+            contact,
+            id,
+            saved: true
+        }
+
 
 
 function confirmation(_action){
@@ -22,8 +35,14 @@ function confirmation(_action){
     action = _action;
 }
 
+function editModal(_action){
+    openEditModal = true;
+    action = _action
+}
+
 // -----    add ECard to the saved emails DB -----  -----  <-----  
 async function addECard(){
+    console.log(id);
     try{
         const eCard = {
             date,
@@ -46,6 +65,7 @@ async function addECard(){
 
 // -----  -----  -----    DELETE email from DB  -----  -----  <-----  
 async function delECard(){
+    console.log(subject);
     try{
         await fetch('../emails', {
             method: 'DELETE',
@@ -56,13 +76,11 @@ async function delECard(){
         alert('error somewhere or another', e)
     }
 }
-// -----  -----  -----    refresh email from DB  -----  -----  <-----  
-// async function refresh(){
-//       const res = await fetch('../emails')
-//         const jsonRes = await res.json()
-//         console.log('a');
-//         return savedEmails = jsonRes.emails
-//   }
+// -----  -----  -----    edit email from DB  -----  -----  <-----  
+function updateDB(){
+    console.log('okay');
+}
+
 
 
 // ----     determine wether email is to be saved or deleted from DB
@@ -72,12 +90,14 @@ function saveOrDeleteEmail(_action){
         addECard()
     } else {
         delECard()
-    }
+    } 
     return openModal = false;
 }
 
 // -----  -----  -----    format description for email -----  -----  <-----  
-
+function z(){
+    console.log('got it');
+}
 
 
 </script>
@@ -101,6 +121,7 @@ function saveOrDeleteEmail(_action){
                 </button>
                 <button class='delete' type='button' on:click={() => confirmation("DELETE")}>delete</button>
                 <button class='save' type='button' on:click={() => confirmation("SAVE")}>save</button>
+                <button class='edit' type='button' on:click={() => editModal("EDIT")}>edit</button>
             </div>
         </footer>
     </section>  
@@ -112,6 +133,18 @@ function saveOrDeleteEmail(_action){
             >
         <p>Are you sure you want to {action}</p>
         </Modal>
+    {/if}
+
+
+    {#if openEditModal}
+    <!-- "yes" is "save" from the editModal -->
+    <EditModal {eCard} on:cancel={() => (openEditModal = false)}
+            on:update={updateDB}
+            on:no={() => (openEditModal = false)}
+            on:yes={updateDB}
+            >
+        <p>When you're finish with your {action} click "done" to replace your previous email</p>
+    </EditModal>
     {/if}
 
     <style>
@@ -140,6 +173,10 @@ function saveOrDeleteEmail(_action){
         }
         .delete{
             margin: 0 .5rem;
+        } 
+        .edit{
+            margin: 0 .5rem;
+            padding:  .075rem .75rem;
         }
         #saved{
             background-color: #AFC5B4;
