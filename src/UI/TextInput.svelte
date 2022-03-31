@@ -5,17 +5,17 @@
 
 	export let controlType;
 
-	export let value;
-	export let id;
-	export let rows;
-	export let label;
-	export let type;
-	export let min;
-	export let max;
-	export let placeholder;
-	export let update;
-	export let action;
-	export let update_action;
+	export let value = '';
+	export let id = '';
+	export let rows = '';
+	export let label = '';
+	export let type = '';
+	export let min = '';
+	export let max = '';
+	export let placeholder = '';
+	export let update = '';
+	export let action = '';
+	export let update_action = '';
 
 	// let update_action = ['Delete Original', 'Keep Both Copies'];
 

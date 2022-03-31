@@ -15,7 +15,7 @@
 	import CardGrid from '../UI/CardGrid.svelte';
 	import Button from '../UI/Button.svelte';
 	import Headroom from 'svelte-headroom';
-	import EditModal from '../UI/EditModal.svelte';
+	// import EditModal from '../UI/EditModal.svelte';
 
 	export let emails;
 	export let importance_levels;
@@ -35,18 +35,14 @@
 	}
 
 	importance_levels = [
-		'🖕 kind of important ',
+		'🙊 kind of important 🙈',
 		'❗️❗️ important❗️❗️',
 		'💀 This is a Priority 💀'
 	];
 
 	// array with "form inputs"
 	// let emails = []
-	let contactList = [
-		'joeblow@hotmail.com',
-		'suzyderkins@springfield.com',
-		'justin.r.stock@gmail.com'
-	];
+	let contactList = ['joeblow@hotmail.com', 'suzyderkins@springfield.com'];
 
 	// populates emails with data from "form inputs" on:submit
 	function addEventCard() {
@@ -75,7 +71,7 @@
 		// if positive count, there's a matched email, push new email reset count
 		x === 0 ? (contactList = [newCard.contact, ...contactList]) : x === 0;
 		reset();
-		return console.log(contactList);
+		return console.log('contactList: ', contactList);
 	}
 
 	async function refresh() {
@@ -164,7 +160,17 @@
 		margin: 2rem auto;
 		padding: 1rem;
 		width: 25rem;
-		background-color: rgb(52, 202, 89);
+		background-color: rgb(106, 212, 133);
+		border-radius: 20px;
+		border-left: solid 1px black;
+		border-bottom: solid 2px black;
+		transition: 0.5s ease-out;
+	}
+	button:hover,
+	button:focus {
+		border: solid 2px rgb(217, 236, 222);
+		color: rgb(96, 102, 98);
+		cursor: pointer;
 	}
 	.form-page {
 		margin: 10rem 5rem 1rem;
