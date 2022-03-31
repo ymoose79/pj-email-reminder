@@ -6,6 +6,7 @@ const mode = process.env.NODE_ENV;
 const dev = mode === "development";
 
 const config = {
+  // purge: false,
 	plugins: [
         //Some plugins, like tailwindcss/nesting, need to run before Tailwind,
         tailwindcss(),
